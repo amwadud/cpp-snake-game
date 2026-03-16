@@ -1,3 +1,8 @@
+/**
+ * @file Food.cpp
+ * @brief Food implementation
+ */
+
 #include "Food.h"
 #include "Constants.h"
 
