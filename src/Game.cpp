@@ -38,7 +38,15 @@ Game::Game()
     gameOverText.setString("GAME OVER\nPress ENTER to restart");
     sf::FloatRect bounds = gameOverText.getLocalBounds();
     gameOverText.setOrigin(sf::Vector2f(bounds.position.x + bounds.size.x / 2.f, bounds.position.y + bounds.size.y / 2.f));
-    gameOverText.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f));
+    gameOverText.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f - 60.f));
+    
+    gameOverStats.setFont(font);
+    gameOverStats.setCharacterSize(20);
+    gameOverStats.setFillColor(Constants::Colors::TextWhite);
+    gameOverStats.setString("");
+    sf::FloatRect statsBounds = gameOverStats.getLocalBounds();
+    gameOverStats.setOrigin(sf::Vector2f(statsBounds.position.x + statsBounds.size.x / 2.f, statsBounds.position.y + statsBounds.size.y / 2.f));
+    gameOverStats.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f + 30.f));
     
     pauseText.setFont(font);
     pauseText.setCharacterSize(48);
@@ -178,6 +186,7 @@ void Game::update(float deltaTime) {
         
         if (snake->hasCollided()) {
             state = GameState::GameOver;
+            gameOverStats.setString("Score: " + std::to_string(score) + " | Length: " + std::to_string(snake->getLength()));
             if (score > highScore) {
                 highScore = score;
                 saveHighScore();
@@ -233,6 +242,7 @@ void Game::render() {
         window.draw(startText);
     } else if (state == GameState::GameOver) {
         window.draw(gameOverText);
+        window.draw(gameOverStats);
     } else if (state == GameState::Paused) {
         window.draw(pauseText);
     }
