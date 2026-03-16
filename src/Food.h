@@ -1,6 +1,11 @@
 #ifndef FOOD_H
 #define FOOD_H
 
+/**
+ * @file Food.h
+ * @brief Food entity and spawning logic
+ */
+
 #include <SFML/Graphics.hpp>
 #include <random>
 #include "Grid.h"
