@@ -9,6 +9,9 @@
 #include <SFML/Graphics.hpp>
 
 namespace Constants {
+    /** Default high score file path */
+    constexpr const char* HighScoreFile = "highscore.txt";
+    
     namespace Version {
         constexpr int Major = 1;
         constexpr int Minor = 0;

@@ -306,7 +306,7 @@ void Game::updateWindowTitle() {
 }
 
 void Game::loadHighScore() {
-    std::ifstream file("highscore.txt");
+    std::ifstream file(Constants::HighScoreFile);
     if (file.is_open()) {
         file >> highScore;
         file.close();
@@ -314,7 +314,7 @@ void Game::loadHighScore() {
 }
 
 void Game::saveHighScore() {
-    std::ofstream file("highscore.txt");
+    std::ofstream file(Constants::HighScoreFile);
     if (file.is_open()) {
         file << highScore;
         file.close();
