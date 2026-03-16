@@ -21,6 +21,7 @@ public:
     bool checkCollision(const sf::Vector2i& pos) const;
     void clear();
     int getCount() const;
+    const std::vector<sf::Vector2i>& getObstacles() const;
 
 private:
     const Grid& grid;

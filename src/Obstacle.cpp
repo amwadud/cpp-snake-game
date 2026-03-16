@@ -61,6 +61,10 @@ int Obstacle::getCount() const {
     return static_cast<int>(positions.size());
 }
 
+const std::vector<sf::Vector2i>& Obstacle::getObstacles() const {
+    return positions;
+}
+
 void Obstacle::generatePosition(const Snake& snake) {
     std::uniform_int_distribution<int> distX(1, grid.getCols() - 2);
     std::uniform_int_distribution<int> distY(1, grid.getRows() - 2);

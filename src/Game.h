@@ -16,6 +16,11 @@
 #include "Obstacle.h"
 #include "GameMode.h"
 #include "SoundManager.h"
+#include "AISnake.h"
+#include "FunnyMessages.h"
+
+#include <vector>
+#include <memory>
 
 enum class GameState { Menu, ModeSelect, Playing, GameOver, Paused, Settings };
 
@@ -36,6 +41,9 @@ private:
     ParticleSystem particles;
     GradientBackground background;
     SoundManager soundManager;
+    FunnyMessages funnyMessages;
+    
+    std::vector<std::unique_ptr<AISnake>> aiSnakes;
     
     GameMode gameMode;
     GameState state;
@@ -45,6 +53,7 @@ private:
     bool doublePointsActive;
     float modeTimer;
     int modeLevel;
+    bool playerWon;
     
     sf::Font font;
     std::vector<sf::Text> menuItems;
@@ -62,6 +71,8 @@ private:
     sf::Text timerText{font, "", 28};
     sf::Text modeInfoText{font, "", 18};
     sf::Text fpsText{font, "", 12};
+    sf::Text funnyMessageText{font, "", 24};
+    float funnyMessageTimer;
     
     int score;
     int highScore;
@@ -88,6 +99,7 @@ private:
     void setupMenu();
     void setupModeSelect();
     void startGameWithMode(GameMode mode);
+    void showFunnyMessage(const std::string& msg, sf::Color color, float duration);
 };
 
 #endif

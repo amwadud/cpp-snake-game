@@ -43,6 +43,10 @@ set(SOURCES
     src/Obstacle.h
     src/GameMode.h
     src/SoundManager.h
+    src/AISnake.cpp
+    src/AISnake.h
+    src/FunnyMessages.cpp
+    src/FunnyMessages.h
 )
 
 add_executable(snake_game ${SOURCES})

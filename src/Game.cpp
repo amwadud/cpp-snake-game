@@ -23,6 +23,7 @@ Game::Game()
       doublePointsActive(false),
       modeTimer(0.f),
       modeLevel(1),
+      playerWon(false),
       selectedMenuItem(0),
       selectedModeItem(0),
       score(0),
@@ -34,7 +35,8 @@ Game::Game()
       keyProcessed(false),
       screenShake(0.f),
       screenShakeIntensity(0.f),
-      menuBlinkTimer(0.f) {
+      menuBlinkTimer(0.f),
+      funnyMessageTimer(0.f) {
     
     window.create(sf::VideoMode(sf::Vector2u(Constants::Window::Width, Constants::Window::Height), 32), 
                   Constants::Window::Title, sf::Style::Close);
@@ -137,13 +139,13 @@ void Game::setupMenu() {
 
 void Game::setupModeSelect() {
     modeItems.clear();
-    std::vector<std::string> modes = {"Classic", "Time Attack", "Zen", "Challenge"};
+    std::vector<std::string> modes = {"Classic", "Time Attack", "Zen", "Challenge", "Battle", "Marathon", "Iron Snake"};
     
     for (size_t i = 0; i < modes.size(); ++i) {
         sf::Text text{font, modes[i], 28};
         sf::FloatRect bounds = text.getLocalBounds();
         text.setOrigin(sf::Vector2f(bounds.position.x + bounds.size.x / 2.f, bounds.position.y + bounds.size.y / 2.f));
-        text.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, 180.f + i * 70.f));
+        text.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, 160.f + i * 55.f));
         modeItems.push_back(text);
     }
 }
@@ -208,9 +210,9 @@ void Game::handleKeyPress(sf::Keyboard::Scancode key) {
             }
         }
     } else if (state == GameState::ModeSelect) {
-        if (key == sf::Keyboard::Scancode::Up || key == sf::Keyboard::Scancode::W) {
+        if (key == sf::Keyboard::Scancode::Up || key == sf::Keyboard::Scancode::W || key == sf::Keyboard::Scancode::K) {
             selectedModeItem = (selectedModeItem - 1 + modeItems.size()) % modeItems.size();
-        } else if (key == sf::Keyboard::Scancode::Down || key == sf::Keyboard::Scancode::S) {
+        } else if (key == sf::Keyboard::Scancode::Down || key == sf::Keyboard::Scancode::S || key == sf::Keyboard::Scancode::J) {
             selectedModeItem = (selectedModeItem + 1) % modeItems.size();
         } else if (key == sf::Keyboard::Scancode::Enter) {
             gameMode = static_cast<GameMode>(selectedModeItem);
@@ -218,6 +220,34 @@ void Game::handleKeyPress(sf::Keyboard::Scancode key) {
             startGameWithMode(gameMode);
         } else if (key == sf::Keyboard::Scancode::Escape) {
             state = GameState::Menu;
+        } else if (key == sf::Keyboard::Scancode::Num1) {
+            gameMode = GameMode::Classic;
+            state = GameState::Playing;
+            startGameWithMode(gameMode);
+        } else if (key == sf::Keyboard::Scancode::Num2) {
+            gameMode = GameMode::TimeAttack;
+            state = GameState::Playing;
+            startGameWithMode(gameMode);
+        } else if (key == sf::Keyboard::Scancode::Num3) {
+            gameMode = GameMode::Zen;
+            state = GameState::Playing;
+            startGameWithMode(gameMode);
+        } else if (key == sf::Keyboard::Scancode::Num4) {
+            gameMode = GameMode::Challenge;
+            state = GameState::Playing;
+            startGameWithMode(gameMode);
+        } else if (key == sf::Keyboard::Scancode::Num5) {
+            gameMode = GameMode::Battle;
+            state = GameState::Playing;
+            startGameWithMode(gameMode);
+        } else if (key == sf::Keyboard::Scancode::Num6) {
+            gameMode = GameMode::Marathon;
+            state = GameState::Playing;
+            startGameWithMode(gameMode);
+        } else if (key == sf::Keyboard::Scancode::Num7) {
+            gameMode = GameMode::IronSnake;
+            state = GameState::Playing;
+            startGameWithMode(gameMode);
         }
     } else if (state == GameState::Playing) {
         switch (key) {
@@ -266,6 +296,7 @@ void Game::startGameWithMode(GameMode mode) {
     delete food;
     delete powerUp;
     delete obstacle;
+    aiSnakes.clear();
     
     snake = new Snake(grid);
     food = new Food(grid, *snake);
@@ -285,9 +316,39 @@ void Game::startGameWithMode(GameMode mode) {
     particles.clear();
     powerUpTimer = 0.f;
     doublePointsActive = false;
+    playerWon = false;
+    funnyMessageTimer = 0.f;
     
     if (info.hasObstacles) {
         obstacle->generate(*snake, modeLevel);
+    }
+    
+    if (info.hasAI && info.aiCount > 0) {
+        std::vector<sf::Color> aiColors = {
+            sf::Color(211, 134, 155),
+            sf::Color(204, 136, 98),
+            sf::Color(131, 165, 152),
+            sf::Color(112, 153, 150),
+            sf::Color(180, 133, 144)
+        };
+        std::vector<std::string> aiNames = {
+            "Shadow",
+            "Viper",
+            "Cobra",
+            "Python",
+            "Mamba"
+        };
+        
+        for (int i = 0; i < info.aiCount && i < 5; i++) {
+            aiSnakes.push_back(std::make_unique<AISnake>(grid, aiColors[i], aiNames[i]));
+        }
+        
+        for (auto& ai : aiSnakes) {
+            sf::Vector2i head = ai->getHead();
+            while (head.x < 5 || head.x > grid.getCols() - 5) {
+                ai = std::make_unique<AISnake>(grid, aiColors[0], aiNames[0]);
+            }
+        }
     }
 }
 
@@ -307,10 +368,48 @@ void Game::update(float deltaTime) {
         }
     }
     
+    if (funnyMessageTimer > 0) {
+        funnyMessageTimer -= deltaTime;
+    }
+    
     updateTimer += deltaTime;
     
     if (updateTimer >= updateInterval) {
         updateTimer = 0.f;
+        
+        std::vector<std::vector<sf::Vector2i>> otherSnakeBodies;
+        for (auto& ai : aiSnakes) {
+            otherSnakeBodies.push_back(ai->getBody());
+        }
+        
+        std::vector<sf::Vector2i> obstaclesList;
+        if (obstacle) {
+            obstaclesList = obstacle->getObstacles();
+        }
+        
+        for (auto& ai : aiSnakes) {
+            if (!ai->isDead()) {
+                ai->update(food->getPosition(), obstaclesList, otherSnakeBodies);
+                
+                if (ai->hasEatenFood(food->getPosition())) {
+                    ai->grow();
+                    
+                    auto msg = funnyMessages.getRandomAIMessage(ai->getName());
+                    showFunnyMessage(msg.text, msg.color, msg.duration);
+                    
+                    food->respawn(*snake);
+                    
+                    float foodX = food->getPosition().x * Constants::Grid::CellSize + Constants::Grid::CellSize / 2.f;
+                    float foodY = food->getPosition().y * Constants::Grid::CellSize + Constants::Grid::CellSize / 2.f;
+                    particles.emit(sf::Vector2f(foodX, foodY), sf::Color(211, 134, 155), 15);
+                }
+                
+                if (ai->hasCollided() || ai->isDead()) {
+                    auto msg = funnyMessages.getRandomDeathMessage(ai->getName());
+                    showFunnyMessage(msg.text, msg.color, msg.duration);
+                }
+            }
+        }
         
         snake->update();
         
@@ -321,6 +420,15 @@ void Game::update(float deltaTime) {
             screenShake = 0.5f;
             screenShakeIntensity = 15.f;
             soundManager.playCollision();
+            
+            for (auto& ai : aiSnakes) {
+                if (!ai->isDead()) {
+                    auto msg = funnyMessages.getRandomAIMessage(ai->getName());
+                    msg.text = ai->getName() + " wins!";
+                    showFunnyMessage(msg.text, sf::Color{184, 187, 38}, 3.0f);
+                }
+            }
+            
             if (score > highScore) {
                 highScore = score;
                 saveHighScore();
@@ -348,6 +456,11 @@ void Game::update(float deltaTime) {
             particles.emit(sf::Vector2f(foodX, foodY), Constants::Colors::Food, 25);
             soundManager.playEat();
             
+            if (gameMode == GameMode::Battle) {
+                auto msg = funnyMessages.getRandomPlayerMessage();
+                showFunnyMessage(msg.text, msg.color, msg.duration);
+            }
+            
             food->respawn(*snake);
             updateScore(Constants::Gameplay::PointsPerFood);
             sessionScore += 1;
@@ -363,6 +476,38 @@ void Game::update(float deltaTime) {
             
             if (score > highScore) {
                 highScore = score;
+            }
+            
+            if (gameMode == GameMode::Battle) {
+                bool allAIDead = true;
+                for (auto& ai : aiSnakes) {
+                    if (!ai->isDead()) {
+                        allAIDead = false;
+                        break;
+                    }
+                }
+                
+                if (allAIDead) {
+                    playerWon = true;
+                    state = GameState::GameOver;
+                    auto msg = funnyMessages.getRandomWinMessage();
+                    showFunnyMessage(msg.text, msg.color, 5.0f);
+                    if (score > highScore) {
+                        highScore = score;
+                        saveHighScore();
+                    }
+                    return;
+                }
+            }
+        }
+        
+        if (gameMode == GameMode::Battle) {
+            for (auto& ai : aiSnakes) {
+                if (!ai->isDead() && ai->getHead() == snake->getHead()) {
+                    ai->setDead(true);
+                    auto msg = funnyMessages.getRandomDeathMessage(ai->getName());
+                    showFunnyMessage(msg.text, msg.color, msg.duration);
+                }
             }
         }
         
@@ -479,7 +624,21 @@ void Game::render() {
         food->render(window);
         powerUp->render(window);
         snake->render(window);
+        
+        for (auto& ai : aiSnakes) {
+            ai->render(window);
+        }
+        
         particles.render(window);
+        
+        if (funnyMessageTimer > 0) {
+            float msgPulse = (std::sin(animationTimer * 5.f) + 1.f) / 2.f;
+            int alpha = static_cast<int>(150 + 100 * msgPulse);
+            sf::Color msgColor = funnyMessageText.getFillColor();
+            msgColor.a = alpha;
+            funnyMessageText.setFillColor(msgColor);
+            window.draw(funnyMessageText);
+        }
         
         scoreText.setString("Score: " + std::to_string(score));
         window.draw(scoreText);
@@ -578,4 +737,14 @@ void Game::updateWindowTitle() {
         title += " (High Score!)";
     }
     window.setTitle(title);
+}
+
+void Game::showFunnyMessage(const std::string& msg, sf::Color color, float duration) {
+    funnyMessageText.setString(msg);
+    funnyMessageText.setFillColor(color);
+    funnyMessageText.setCharacterSize(24);
+    sf::FloatRect bounds = funnyMessageText.getLocalBounds();
+    funnyMessageText.setOrigin(sf::Vector2f(bounds.position.x + bounds.size.x / 2.f, bounds.position.y + bounds.size.y / 2.f));
+    funnyMessageText.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f - 120.f));
+    funnyMessageTimer = duration;
 }
