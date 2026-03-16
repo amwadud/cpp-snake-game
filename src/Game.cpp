@@ -61,6 +61,11 @@ Game::Game()
     startText.setOrigin(sf::Vector2f(startBounds.position.x + startBounds.size.x / 2.f, startBounds.position.y + startBounds.size.y / 2.f));
     startText.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f - 50.f));
     
+    fpsText.setFont(font);
+    fpsText.setCharacterSize(12);
+    fpsText.setFillColor(sf::Color(100, 100, 100));
+    fpsText.setPosition(sf::Vector2f(static_cast<float>(Constants::Window::Width - 60), 10.f));
+    
     loadHighScore();
     
     snake = new Snake(grid);
@@ -74,11 +79,22 @@ Game::~Game() {
 
 void Game::run() {
     sf::Clock clock;
+    sf::Clock fpsClock;
+    float fpsUpdateTimer = 0.f;
+    int frameCount = 0;
     
     while (window.isOpen()) {
         sf::Time elapsed = clock.restart();
         float deltaTime = elapsed.asSeconds();
         animationTimer += deltaTime;
+        
+        frameCount++;
+        fpsUpdateTimer += deltaTime;
+        if (fpsUpdateTimer >= 1.0f) {
+            fpsText.setString("FPS: " + std::to_string(frameCount));
+            frameCount = 0;
+            fpsUpdateTimer = 0.f;
+        }
         
         processEvents();
         
@@ -222,6 +238,8 @@ void Game::render() {
     if (state != GameState::Start) {
         window.draw(controlsText);
     }
+    
+    window.draw(fpsText);
     
     window.display();
 }
