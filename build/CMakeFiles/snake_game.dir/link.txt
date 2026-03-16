@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/snake_game.dir/link.d CMakeFiles/snake_game.dir/src/main.cpp.o CMakeFiles/snake_game.dir/src/Game.cpp.o CMakeFiles/snake_game.dir/src/Snake.cpp.o CMakeFiles/snake_game.dir/src/Food.cpp.o CMakeFiles/snake_game.dir/src/Grid.cpp.o -o bin/snake_game  -lsfml-graphics -lsfml-window -lsfml-system
