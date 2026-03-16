@@ -247,6 +247,9 @@ void Game::render() {
         window.draw(scoreText);
         
         if (score > 0 && score == highScore) {
+            float hsPulse = (std::sin(animationTimer * 4.0f) + 1.0f) / 2.0f;
+            int alpha = static_cast<int>(180 + 75 * hsPulse);
+            highScoreIndicator.setFillColor(sf::Color(255, 255, 0, alpha));
             window.draw(highScoreIndicator);
         }
     }
