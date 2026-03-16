@@ -138,6 +138,14 @@ void Game::handleKeyPress(sf::Keyboard::Scancode key) {
         if (key == sf::Keyboard::Scancode::P || key == sf::Keyboard::Scancode::Escape) {
             state = GameState::Playing;
         }
+    } else if (state == GameState::Start) {
+        if (key == sf::Keyboard::Scancode::Escape) {
+            window.close();
+        }
+    } else if (state == GameState::GameOver) {
+        if (key == sf::Keyboard::Scancode::Escape) {
+            state = GameState::Start;
+        }
     }
 }
 
