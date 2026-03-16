@@ -11,7 +11,8 @@ Game::Game()
       score(0),
       highScore(0),
       updateTimer(0.f),
-      updateInterval(Constants::Gameplay::InitialUpdateInterval) {
+      updateInterval(Constants::Gameplay::InitialUpdateInterval),
+      animationTimer(0.f) {
     
     window.create(sf::VideoMode(sf::Vector2u(Constants::Window::Width, Constants::Window::Height), 32), 
                   Constants::Window::Title, sf::Style::Close);
@@ -77,6 +78,7 @@ void Game::run() {
     while (window.isOpen()) {
         sf::Time elapsed = clock.restart();
         float deltaTime = elapsed.asSeconds();
+        animationTimer += deltaTime;
         
         processEvents();
         
@@ -207,6 +209,9 @@ void Game::render() {
     }
     
     if (state == GameState::Start) {
+        float pulse = (std::sin(animationTimer * 3.0f) + 1.0f) / 2.0f;
+        int alpha = static_cast<int>(128 + 127 * pulse);
+        startText.setFillColor(sf::Color(255, 255, 255, alpha));
         window.draw(startText);
     } else if (state == GameState::GameOver) {
         window.draw(gameOverText);

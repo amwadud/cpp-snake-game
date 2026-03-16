@@ -33,6 +33,7 @@ private:
     int highScore;
     float updateTimer;
     float updateInterval;
+    float animationTimer;
     
     void processEvents();
     void update(float deltaTime);
