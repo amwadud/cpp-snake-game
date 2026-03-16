@@ -7,9 +7,9 @@ Snake::Snake(const Grid& grid)
     int startX = grid.getCols() / 2;
     int startY = grid.getRows() / 2;
     
-    body.push_back(sf::Vector2i(startX, startY));
-    body.push_back(sf::Vector2i(startX - 1, startY));
-    body.push_back(sf::Vector2i(startX - 2, startY));
+    for (int i = 0; i < Constants::Gameplay::StartingSnakeLength; ++i) {
+        body.push_back(sf::Vector2i(startX - i, startY));
+    }
     
     segmentShape.setSize(sf::Vector2f(grid.getCellSize() - 2, grid.getCellSize() - 2));
     segmentShape.setOrigin(sf::Vector2f(1, 1));
