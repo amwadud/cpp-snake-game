@@ -1,6 +1,18 @@
+/**
+ * @file main.cpp
+ * @brief Entry point for Snake Game
+ * 
+ * A classic Snake game built with SFML.
+ * Use arrow keys or WASD to control the snake.
+ */
+
 #include <iostream>
 #include "Game.h"
 
+/**
+ * @brief Main entry point
+ * @return 0 on successful exit, 1 on error
+ */
 int main() {
     try {
         Game game;
