@@ -12,7 +12,8 @@ Game::Game()
       highScore(0),
       updateTimer(0.f),
       updateInterval(Constants::Gameplay::InitialUpdateInterval),
-      animationTimer(0.f) {
+      animationTimer(0.f),
+      keyProcessed(false) {
     
     window.create(sf::VideoMode(sf::Vector2u(Constants::Window::Width, Constants::Window::Height), 32), 
                   Constants::Window::Title, sf::Style::Close);
@@ -194,6 +195,7 @@ void Game::update(float deltaTime) {
             }
         }
     }
+    keyProcessed = false;
 }
 
 void Game::render() {

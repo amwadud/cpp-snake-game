@@ -35,6 +35,7 @@ private:
     float updateTimer;
     float updateInterval;
     float animationTimer;
+    bool keyProcessed;
     
     void processEvents();
     void update(float deltaTime);
