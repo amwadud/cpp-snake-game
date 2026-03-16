@@ -236,7 +236,7 @@ void Game::render() {
     }
     
     if (state != GameState::Start) {
-        float foodPulse = 0.8f + 0.4f * (std::sin(animationTimer * 5.0f) + 1.0f) / 2.0f;
+        float foodPulse = 0.8f + 0.4f * (std::sin(animationTimer * Constants::Animation::FoodPulseSpeed) + 1.0f) / 2.0f;
         food->setScale(foodPulse);
         food->render(window);
         snake->render(window);
@@ -247,7 +247,7 @@ void Game::render() {
         window.draw(scoreText);
         
         if (score > 0 && score == highScore) {
-            float hsPulse = (std::sin(animationTimer * 4.0f) + 1.0f) / 2.0f;
+            float hsPulse = (std::sin(animationTimer * Constants::Animation::HighScoreSpeed) + 1.0f) / 2.0f;
             int alpha = static_cast<int>(180 + 75 * hsPulse);
             highScoreIndicator.setFillColor(sf::Color(255, 255, 0, alpha));
             window.draw(highScoreIndicator);
@@ -255,7 +255,7 @@ void Game::render() {
     }
     
     if (state == GameState::Start) {
-        float pulse = (std::sin(animationTimer * 3.0f) + 1.0f) / 2.0f;
+        float pulse = (std::sin(animationTimer * Constants::Animation::StartTextSpeed) + 1.0f) / 2.0f;
         int alpha = static_cast<int>(128 + 127 * pulse);
         startText.setFillColor(sf::Color(255, 255, 255, alpha));
         window.draw(startText);
