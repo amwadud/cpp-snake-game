@@ -42,6 +42,12 @@ namespace Constants {
         constexpr bool ShowDebugInfo = false;
     }
     
+    namespace Animation {
+        constexpr float StartTextSpeed = 3.0f;
+        constexpr float FoodPulseSpeed = 5.0f;
+        constexpr float HighScoreSpeed = 4.0f;
+    }
+    
     namespace Colors {
         constexpr sf::Color Background{20, 20, 30};
         constexpr sf::Color GridLine{40, 40, 50};
