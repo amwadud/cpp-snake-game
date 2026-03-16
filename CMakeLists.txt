@@ -33,6 +33,8 @@ set(SOURCES
     src/Grid.cpp
     src/Grid.h
     src/Constants.h
+    src/ParticleSystem.cpp
+    src/ParticleSystem.h
 )
 
 add_executable(snake_game ${SOURCES})

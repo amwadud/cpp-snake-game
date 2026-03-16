@@ -10,6 +10,7 @@
 #include "Grid.h"
 #include "Snake.h"
 #include "Food.h"
+#include "ParticleSystem.h"
 
 enum class GameState { Start, Playing, GameOver, Paused };
 
@@ -25,6 +26,7 @@ private:
     Grid grid;
     Snake* snake;
     Food* food;
+    ParticleSystem particles;
     
     sf::Font font;
     sf::Text scoreText{font, "", 30};
@@ -43,6 +45,8 @@ private:
     float updateInterval;
     float animationTimer;
     bool keyProcessed;
+    float screenShake;
+    float screenShakeIntensity;
     
     void processEvents();
     void update(float deltaTime);

@@ -18,7 +18,9 @@ Game::Game()
       updateTimer(0.f),
       updateInterval(Constants::Gameplay::InitialUpdateInterval),
       animationTimer(0.f),
-      keyProcessed(false) {
+      keyProcessed(false),
+      screenShake(0.f),
+      screenShakeIntensity(0.f) {
     
     window.create(sf::VideoMode(sf::Vector2u(Constants::Window::Width, Constants::Window::Height), 32), 
                   Constants::Window::Title, sf::Style::Close);
@@ -107,6 +109,7 @@ void Game::run() {
         sf::Time elapsed = clock.restart();
         float deltaTime = elapsed.asSeconds();
         animationTimer += deltaTime;
+        particles.update(deltaTime);
         
         frameCount++;
         fpsUpdateTimer += deltaTime;
@@ -201,6 +204,8 @@ void Game::update(float deltaTime) {
         
         if (snake->hasCollided()) {
             state = GameState::GameOver;
+            screenShake = 0.5f;
+            screenShakeIntensity = 15.f;
             gameOverStats.setString("Score: " + std::to_string(score) + " | Length: " + std::to_string(snake->getLength()));
             if (score > highScore) {
                 highScore = score;
@@ -211,6 +216,11 @@ void Game::update(float deltaTime) {
         
         if (snake->hasEatenFood(food->getPosition())) {
             snake->grow();
+            
+            float foodX = food->getPosition().x * Constants::Grid::CellSize + Constants::Grid::CellSize / 2.f;
+            float foodY = food->getPosition().y * Constants::Grid::CellSize + Constants::Grid::CellSize / 2.f;
+            particles.emit(sf::Vector2f(foodX, foodY), Constants::Colors::Food, 25);
+            
             food->respawn(*snake);
             updateScore(Constants::Gameplay::PointsPerFood);
             
@@ -227,6 +237,18 @@ void Game::update(float deltaTime) {
 }
 
 void Game::render() {
+    sf::Vector2f viewOffset(0, 0);
+    
+    if (screenShake > 0) {
+        float offsetX = (rand() % 100 / 100.f - 0.5f) * screenShakeIntensity * screenShake;
+        float offsetY = (rand() % 100 / 100.f - 0.5f) * screenShakeIntensity * screenShake;
+        viewOffset = sf::Vector2f(offsetX, offsetY);
+        sf::View view = window.getView();
+        view.setCenter(sf::Vector2f(Constants::Window::Width / 2.f + offsetX, Constants::Window::Height / 2.f + offsetY));
+        window.setView(view);
+        screenShake -= 0.02f;
+    }
+    
     window.clear(Constants::Colors::Background);
     
     static sf::RectangleShape gridLineV(sf::Vector2f(1.f, static_cast<float>(Constants::Window::Height)));
@@ -249,6 +271,7 @@ void Game::render() {
         food->setScale(foodPulse);
         food->render(window);
         snake->render(window);
+        particles.render(window);
         
         scoreText.setString("Score: " + std::to_string(score) + 
                             " | Length: " + std::to_string(snake->getLength()) +
@@ -292,6 +315,8 @@ void Game::resetGame() {
     state = GameState::Playing;
     updateTimer = 0.f;
     updateInterval = Constants::Gameplay::InitialUpdateInterval;
+    screenShake = 0.f;
+    particles.clear();
     
     snake = new Snake(grid);
     food = new Food(grid, *snake);
