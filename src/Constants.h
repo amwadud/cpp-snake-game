@@ -34,6 +34,7 @@ namespace Constants {
         constexpr float MinUpdateInterval = 0.05f;
         constexpr float SpeedIncrease = 0.002f;
         constexpr int PointsPerFood = 10;
+        constexpr int StartingSnakeLength = 3;
     }
 
     namespace Debug {
