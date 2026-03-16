@@ -226,6 +226,8 @@ void Game::render() {
     }
     
     if (state != GameState::Start) {
+        float foodPulse = 0.8f + 0.4f * (std::sin(animationTimer * 5.0f) + 1.0f) / 2.0f;
+        food->setScale(foodPulse);
         food->render(window);
         snake->render(window);
         
