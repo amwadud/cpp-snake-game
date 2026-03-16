@@ -1,6 +1,11 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+/**
+ * @file Constants.h
+ * @brief Centralized game constants and configuration
+ */
+
 #include <SFML/Graphics.hpp>
 
 namespace Constants {
