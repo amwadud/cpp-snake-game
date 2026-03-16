@@ -1,4 +1,5 @@
 #include "Snake.h"
+#include "Constants.h"
 
 Snake::Snake(const Grid& grid)
     : grid(grid), direction(Direction::Right), nextDirection(Direction::Right), grew(false) {
@@ -76,9 +77,9 @@ void Snake::render(sf::RenderWindow& window) {
         segmentShape.setPosition(sf::Vector2f(x + grid.getCellSize() / 2.f, y + grid.getCellSize() / 2.f));
         
         if (i == 0) {
-            segmentShape.setFillColor(sf::Color(0, 200, 100));
+            segmentShape.setFillColor(Constants::Colors::SnakeHead);
         } else {
-            segmentShape.setFillColor(sf::Color(0, 150, 80));
+            segmentShape.setFillColor(Constants::Colors::SnakeBody);
         }
         
         window.draw(segmentShape);
