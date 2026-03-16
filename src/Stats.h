@@ -1,6 +1,11 @@
 #ifndef STATS_H
 #define STATS_H
 
+/**
+ * @file Stats.h
+ * @brief Game statistics tracking
+ */
+
 #include <string>
 
 struct GameStats {
