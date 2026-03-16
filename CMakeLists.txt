@@ -39,6 +39,10 @@ set(SOURCES
     src/GradientBackground.h
     src/PowerUp.cpp
     src/PowerUp.h
+    src/Obstacle.cpp
+    src/Obstacle.h
+    src/GameMode.h
+    src/SoundManager.h
 )
 
 add_executable(snake_game ${SOURCES})
