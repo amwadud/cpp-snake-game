@@ -4,6 +4,13 @@ A classic Snake game built with SFML (Simple and Fast Multimedia Library).
 
 **Version:** 1.0.0
 
+# Look!
+
+<img width="809" height="607" alt="image" src="https://github.com/user-attachments/assets/466ba91f-8dc8-4eda-9e07-464b754383d0" />
+
+<img width="809" height="607" alt="image" src="https://github.com/user-attachments/assets/53e94aac-2ff7-4060-86cb-d260ddf9df85" />
+
+
 ## Features
 
 - Smooth snake movement with keyboard controls (Arrow keys or WASD)
