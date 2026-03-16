@@ -1,0 +1,8 @@
+This release includes:
+- Complete SFML-based snake game
+- Progressive difficulty
+- Multiple game states (Start, Playing, Paused, Game Over)
+- Visual animations
+- High score persistence
+- Comprehensive documentation
+- Build system improvements
