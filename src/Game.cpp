@@ -12,16 +12,20 @@ Game::Game()
     : grid(Constants::Grid::CellSize, Constants::Window::Width, Constants::Window::Height),
       snake(nullptr),
       food(nullptr),
+      powerUp(nullptr),
       background(Constants::Window::Width, Constants::Window::Height),
       state(GameState::Start),
       score(0),
       highScore(0),
       updateTimer(0.f),
       updateInterval(Constants::Gameplay::InitialUpdateInterval),
+      baseUpdateInterval(Constants::Gameplay::InitialUpdateInterval),
       animationTimer(0.f),
       keyProcessed(false),
       screenShake(0.f),
-      screenShakeIntensity(0.f) {
+      screenShakeIntensity(0.f),
+      powerUpTimer(0.f),
+      doublePointsActive(false) {
     
     window.create(sf::VideoMode(sf::Vector2u(Constants::Window::Width, Constants::Window::Height), 32), 
                   Constants::Window::Title, sf::Style::Close);
@@ -93,11 +97,13 @@ Game::Game()
     
     snake = new Snake(grid);
     food = new Food(grid, *snake);
+    powerUp = new PowerUp(grid, *snake);
 }
 
 Game::~Game() {
     delete snake;
     delete food;
+    delete powerUp;
 }
 
 void Game::run() {
@@ -233,6 +239,36 @@ void Game::update(float deltaTime) {
                 highScore = score;
             }
         }
+        
+        if (powerUp->isActive() && snake->getHead() == powerUp->getPosition()) {
+            powerUp->setActive(false);
+            
+            float puX = powerUp->getPosition().x * Constants::Grid::CellSize + Constants::Grid::CellSize / 2.f;
+            float puY = powerUp->getPosition().y * Constants::Grid::CellSize + Constants::Grid::CellSize / 2.f;
+            particles.emit(sf::Vector2f(puX, puY), sf::Color(250, 189, 47), 30);
+            
+            switch (powerUp->getType()) {
+                case PowerUpType::SpeedBoost:
+                    updateInterval = baseUpdateInterval * 0.6f;
+                    break;
+                case PowerUpType::DoublePoints:
+                    doublePointsActive = true;
+                    break;
+                case PowerUpType::SlowDown:
+                    updateInterval = baseUpdateInterval * 1.5f;
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        powerUpTimer += deltaTime;
+        if (powerUpTimer >= 15.f && !powerUp->isActive()) {
+            powerUp->respawn(*snake);
+            powerUpTimer = 0.f;
+        }
+        
+        powerUp->update(deltaTime);
     }
     keyProcessed = false;
 }
@@ -272,6 +308,7 @@ void Game::render() {
         float foodPulse = 0.8f + 0.4f * (std::sin(animationTimer * Constants::Animation::FoodPulseSpeed) + 1.0f) / 2.0f;
         food->setScale(foodPulse);
         food->render(window);
+        powerUp->render(window);
         snake->render(window);
         particles.render(window);
         
@@ -317,15 +354,20 @@ void Game::resetGame() {
     state = GameState::Playing;
     updateTimer = 0.f;
     updateInterval = Constants::Gameplay::InitialUpdateInterval;
+    baseUpdateInterval = Constants::Gameplay::InitialUpdateInterval;
     screenShake = 0.f;
     particles.clear();
+    powerUpTimer = 0.f;
+    doublePointsActive = false;
+    powerUp->setActive(false);
     
     snake = new Snake(grid);
     food = new Food(grid, *snake);
 }
 
 void Game::updateScore(int points) {
-    score += points;
+    int actualPoints = doublePointsActive ? points * 2 : points;
+    score += actualPoints;
     if (score > highScore) {
         highScore = score;
     }

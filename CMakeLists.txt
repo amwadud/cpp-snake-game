@@ -37,6 +37,8 @@ set(SOURCES
     src/ParticleSystem.h
     src/GradientBackground.cpp
     src/GradientBackground.h
+    src/PowerUp.cpp
+    src/PowerUp.h
 )
 
 add_executable(snake_game ${SOURCES})

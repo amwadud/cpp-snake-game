@@ -12,6 +12,7 @@
 #include "Food.h"
 #include "ParticleSystem.h"
 #include "GradientBackground.h"
+#include "PowerUp.h"
 
 enum class GameState { Start, Playing, GameOver, Paused };
 
@@ -27,8 +28,13 @@ private:
     Grid grid;
     Snake* snake;
     Food* food;
+    PowerUp* powerUp;
     ParticleSystem particles;
     GradientBackground background;
+    
+    float powerUpTimer;
+    float baseUpdateInterval;
+    bool doublePointsActive;
     
     sf::Font font;
     sf::Text scoreText{font, "", 30};
