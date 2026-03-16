@@ -173,7 +173,9 @@ void Game::render() {
     food->render(window);
     snake->render(window);
     
-    scoreText.setString("Score: " + std::to_string(score) + " | High Score: " + std::to_string(highScore));
+    scoreText.setString("Score: " + std::to_string(score) + 
+                        " | Length: " + std::to_string(snake->getLength()) +
+                        " | High: " + std::to_string(highScore));
     window.draw(scoreText);
     
     if (state == GameState::GameOver) {
