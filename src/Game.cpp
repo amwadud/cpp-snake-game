@@ -230,12 +230,12 @@ void Game::render() {
     gridLineV.setFillColor(Constants::Colors::GridLine);
     gridLineH.setFillColor(Constants::Colors::GridLine);
     
-    for (int x = 0; x <= Constants::Window::Width; x += Constants::Grid::CellSize) {
+    for (unsigned int x = 0; x <= Constants::Window::Width; x += Constants::Grid::CellSize) {
         gridLineV.setPosition(sf::Vector2f(static_cast<float>(x), 0));
         window.draw(gridLineV);
     }
     
-    for (int y = 0; y <= Constants::Window::Height; y += Constants::Grid::CellSize) {
+    for (unsigned int y = 0; y <= Constants::Window::Height; y += Constants::Grid::CellSize) {
         gridLineH.setPosition(sf::Vector2f(0, static_cast<float>(y)));
         window.draw(gridLineH);
     }

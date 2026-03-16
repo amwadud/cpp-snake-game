@@ -12,11 +12,13 @@ endif()
 option(ENABLE_WERROR "Treat warnings as errors" OFF)
 option(ENABLE_TESTING "Build tests" OFF)
 
-find_package(SFML 2.5 COMPONENTS graphics window system)
+find_package(SFML 3.0 COMPONENTS Graphics Window System)
 
 if(NOT SFML_FOUND)
     message(FATAL_ERROR "SFML not found. Please install libsfml-dev")
 endif()
+
+message(STATUS "Found SFML: ${SFML_VERSION}")
 
 include_directories(${SFML_INCLUDE_DIR})
 
