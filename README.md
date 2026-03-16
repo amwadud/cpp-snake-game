@@ -80,6 +80,22 @@ cpp-snake-game/
 └── .gitignore
 ```
 
+## Quick Reference
+
+### Building with CMake Presets
+```bash
+cmake --preset default
+cmake --build build
+./build/bin/snake_game
+```
+
+### Configuration
+Edit `src/Constants.h` to adjust:
+- Window size
+- Grid cell size
+- Gameplay speed
+- Colors
+
 ## License
 
 MIT License
