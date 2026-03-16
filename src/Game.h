@@ -1,6 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+/**
+ * @file Game.h
+ * @brief Main game class and state management
+ */
+
 #include <SFML/Graphics.hpp>
 #include "Grid.h"
 #include "Snake.h"
