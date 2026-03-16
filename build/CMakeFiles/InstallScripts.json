@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/aksel/prj/cpp-snake-game/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

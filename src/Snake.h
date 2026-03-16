@@ -32,7 +32,7 @@ private:
     
     sf::RectangleShape segmentShape;
     
-    sf::Vector2i getNewHeadPosition() const;
+    sf::Vector2i getNewHeadPosition();
     bool isOppositeDirection(Direction dir) const;
 };
 

@@ -1,0 +1,7 @@
+/home/aksel/prj/cpp-snake-game/build/CMakeFiles/snake_game.dir
+/home/aksel/prj/cpp-snake-game/build/CMakeFiles/edit_cache.dir
+/home/aksel/prj/cpp-snake-game/build/CMakeFiles/rebuild_cache.dir
+/home/aksel/prj/cpp-snake-game/build/CMakeFiles/list_install_components.dir
+/home/aksel/prj/cpp-snake-game/build/CMakeFiles/install.dir
+/home/aksel/prj/cpp-snake-game/build/CMakeFiles/install/local.dir
+/home/aksel/prj/cpp-snake-game/build/CMakeFiles/install/strip.dir

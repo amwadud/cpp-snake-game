@@ -5,7 +5,7 @@ Food::Food(const Grid& grid, const Snake& snake)
     
     float radius = static_cast<float>(grid.getCellSize()) / 2.f - 4.f;
     foodShape.setRadius(radius);
-    foodShape.setOrigin(radius, radius);
+    foodShape.setOrigin(sf::Vector2f(radius, radius));
     foodShape.setFillColor(sf::Color(255, 80, 80));
     
     generatePosition(snake);
@@ -22,7 +22,7 @@ sf::Vector2i Food::getPosition() const {
 void Food::render(sf::RenderWindow& window) {
     float x = static_cast<float>(position.x * grid.getCellSize() + grid.getCellSize() / 2);
     float y = static_cast<float>(position.y * grid.getCellSize() + grid.getCellSize() / 2);
-    foodShape.setPosition(x, y);
+    foodShape.setPosition(sf::Vector2f(x, y));
     window.draw(foodShape);
 }
 

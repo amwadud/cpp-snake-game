@@ -73,7 +73,7 @@ void Snake::render(sf::RenderWindow& window) {
         float x = static_cast<float>(body[i].x * grid.getCellSize());
         float y = static_cast<float>(body[i].y * grid.getCellSize());
         
-        segmentShape.setPosition(x + grid.getCellSize() / 2.f, y + grid.getCellSize() / 2.f);
+        segmentShape.setPosition(sf::Vector2f(x + grid.getCellSize() / 2.f, y + grid.getCellSize() / 2.f));
         
         if (i == 0) {
             segmentShape.setFillColor(sf::Color(0, 200, 100));
@@ -85,7 +85,7 @@ void Snake::render(sf::RenderWindow& window) {
     }
 }
 
-sf::Vector2i Snake::getNewHeadPosition() const {
+sf::Vector2i Snake::getNewHeadPosition() {
     sf::Vector2i head = body.front();
     direction = nextDirection;
     

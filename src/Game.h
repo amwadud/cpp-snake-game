@@ -2,7 +2,6 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include "Grid.h"
 #include "Snake.h"
 #include "Food.h"
@@ -23,9 +22,9 @@ private:
     Food* food;
     
     sf::Font font;
-    sf::Text scoreText;
-    sf::Text gameOverText;
-    sf::Text pauseText;
+    sf::Text scoreText{font, "", 30};
+    sf::Text gameOverText{font, "", 30};
+    sf::Text pauseText{font, "", 30};
     
     GameState state;
     int score;
@@ -33,16 +32,11 @@ private:
     float updateTimer;
     float updateInterval;
     
-    sf::SoundBuffer eatBuffer;
-    sf::SoundBuffer dieBuffer;
-    sf::Sound eatSound;
-    sf::Sound dieSound;
-    
     void processEvents();
     void update(float deltaTime);
     void render();
     
-    void handleKeyPress(sf::Keyboard::Key key);
+    void handleKeyPress(sf::Keyboard::Scancode key);
     void resetGame();
     void updateScore(int points);
     void loadHighScore();
