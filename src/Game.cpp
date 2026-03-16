@@ -1,19 +1,21 @@
 #include "Game.h"
+#include "Constants.h"
 #include <fstream>
 #include <iostream>
 
 Game::Game()
-    : grid(20, 800, 600),
+    : grid(Constants::Grid::CellSize, Constants::Window::Width, Constants::Window::Height),
       snake(nullptr),
       food(nullptr),
       state(GameState::Playing),
       score(0),
       highScore(0),
       updateTimer(0.f),
-      updateInterval(0.12f) {
+      updateInterval(Constants::Gameplay::InitialUpdateInterval) {
     
-    window.create(sf::VideoMode(sf::Vector2u(800, 600), 32), "Snake Game", sf::Style::Close);
-    window.setFramerateLimit(60);
+    window.create(sf::VideoMode(sf::Vector2u(Constants::Window::Width, Constants::Window::Height), 32), 
+                  Constants::Window::Title, sf::Style::Close);
+    window.setFramerateLimit(Constants::Window::FrameRateLimit);
     
     if (!font.openFromFile("/usr/share/fonts/liberation/LiberationSans-Regular.ttf") &&
         !font.openFromFile("/usr/share/fonts/liberation/LiberationSans-Bold.ttf") &&
@@ -25,24 +27,24 @@ Game::Game()
     
     scoreText.setFont(font);
     scoreText.setCharacterSize(24);
-    scoreText.setFillColor(sf::Color::White);
+    scoreText.setFillColor(Constants::Colors::TextWhite);
     scoreText.setPosition(sf::Vector2f(10, 10));
     
     gameOverText.setFont(font);
     gameOverText.setCharacterSize(48);
-    gameOverText.setFillColor(sf::Color::Red);
+    gameOverText.setFillColor(Constants::Colors::TextRed);
     gameOverText.setString("GAME OVER\nPress ENTER to restart");
     sf::FloatRect bounds = gameOverText.getLocalBounds();
     gameOverText.setOrigin(sf::Vector2f(bounds.position.x + bounds.size.x / 2.f, bounds.position.y + bounds.size.y / 2.f));
-    gameOverText.setPosition(sf::Vector2f(400.f, 300.f));
+    gameOverText.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f));
     
     pauseText.setFont(font);
     pauseText.setCharacterSize(48);
-    pauseText.setFillColor(sf::Color::Yellow);
+    pauseText.setFillColor(Constants::Colors::TextYellow);
     pauseText.setString("PAUSED\nPress P to resume");
     bounds = pauseText.getLocalBounds();
     pauseText.setOrigin(sf::Vector2f(bounds.position.x + bounds.size.x / 2.f, bounds.position.y + bounds.size.y / 2.f));
-    pauseText.setPosition(sf::Vector2f(400.f, 300.f));
+    pauseText.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f));
     
     loadHighScore();
     
@@ -141,16 +143,20 @@ void Game::update(float deltaTime) {
         if (snake->hasEatenFood(food->getPosition())) {
             snake->grow();
             food->respawn(*snake);
-            updateScore(10);
+            updateScore(Constants::Gameplay::PointsPerFood);
+            
+            if (updateInterval > Constants::Gameplay::MinUpdateInterval) {
+                updateInterval -= Constants::Gameplay::SpeedIncrease;
+            }
         }
     }
 }
 
 void Game::render() {
-    window.clear(sf::Color(20, 20, 30));
+    window.clear(Constants::Colors::Background);
     
     sf::RectangleShape gridLine;
-    gridLine.setFillColor(sf::Color(40, 40, 50));
+    gridLine.setFillColor(Constants::Colors::GridLine);
     
     for (int x = 0; x <= grid.getWidth(); x += grid.getCellSize()) {
         gridLine.setSize(sf::Vector2f(1, static_cast<float>(grid.getHeight())));
@@ -186,6 +192,7 @@ void Game::resetGame() {
     score = 0;
     state = GameState::Playing;
     updateTimer = 0.f;
+    updateInterval = Constants::Gameplay::InitialUpdateInterval;
     
     snake = new Snake(grid);
     food = new Food(grid, *snake);
