@@ -75,6 +75,12 @@ Game::Game()
     fpsText.setFillColor(sf::Color(100, 100, 100));
     fpsText.setPosition(sf::Vector2f(static_cast<float>(Constants::Window::Width - 60), 10.f));
     
+    highScoreIndicator.setFont(font);
+    highScoreIndicator.setCharacterSize(18);
+    highScoreIndicator.setFillColor(Constants::Colors::TextYellow);
+    highScoreIndicator.setString("NEW HIGH SCORE!");
+    highScoreIndicator.setPosition(sf::Vector2f(Constants::Window::Width / 2.f - 80.f, 50.f));
+    
     loadHighScore();
     
     snake = new Snake(grid);
@@ -239,6 +245,10 @@ void Game::render() {
                             " | Length: " + std::to_string(snake->getLength()) +
                             " | High: " + std::to_string(highScore));
         window.draw(scoreText);
+        
+        if (score > 0 && score == highScore) {
+            window.draw(highScoreIndicator);
+        }
     }
     
     if (state == GameState::Start) {

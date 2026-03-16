@@ -25,6 +25,7 @@ private:
     sf::Text scoreText{font, "", 30};
     sf::Text gameOverText{font, "", 30};
     sf::Text gameOverStats{font, "", 20};
+    sf::Text highScoreIndicator{font, "", 18};
     sf::Text pauseText{font, "", 30};
     sf::Text startText{font, "", 30};
     sf::Text controlsText{font, "", 16};
