@@ -1,3 +1,8 @@
+/**
+ * @file Game.cpp
+ * @brief Main game implementation
+ */
+
 #include "Game.h"
 #include "Constants.h"
 #include <fstream>
