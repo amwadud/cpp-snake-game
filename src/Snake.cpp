@@ -16,8 +16,15 @@ Snake::Snake(const Grid& grid)
         body.push_back(sf::Vector2i(startX - i, startY));
     }
     
-    segmentShape.setSize(sf::Vector2f(grid.getCellSize() - 2, grid.getCellSize() - 2));
-    segmentShape.setOrigin(sf::Vector2f(1, 1));
+    float size = static_cast<float>(grid.getCellSize() - 6);
+    segmentShape.setSize(sf::Vector2f(size, size));
+    segmentShape.setOrigin(sf::Vector2f(size/2.f, size/2.f));
+    
+    float eyeRadius = size / 5.f;
+    eyeLeft.setRadius(eyeRadius);
+    eyeRight.setRadius(eyeRadius);
+    eyeLeft.setOrigin(sf::Vector2f(eyeRadius, eyeRadius));
+    eyeRight.setOrigin(sf::Vector2f(eyeRadius, eyeRadius));
 }
 
 void Snake::update() {
@@ -79,19 +86,75 @@ void Snake::grow() {
 }
 
 void Snake::render(sf::RenderWindow& window) {
+    float cellSize = static_cast<float>(grid.getCellSize());
+    float size = cellSize - 6.f;
+    float offset = cellSize / 2.f;
+    
     for (size_t i = 0; i < body.size(); ++i) {
-        float x = static_cast<float>(body[i].x * grid.getCellSize());
-        float y = static_cast<float>(body[i].y * grid.getCellSize());
+        float x = static_cast<float>(body[i].x * cellSize) + offset;
+        float y = static_cast<float>(body[i].y * cellSize) + offset;
         
-        segmentShape.setPosition(sf::Vector2f(x + grid.getCellSize() / 2.f, y + grid.getCellSize() / 2.f));
+        segmentShape.setPosition(sf::Vector2f(x, y));
         
         if (i == 0) {
             segmentShape.setFillColor(Constants::Colors::SnakeHead);
+            
+            float headX = body[i].x * cellSize + cellSize / 2.f;
+            float headY = body[i].y * cellSize + cellSize / 2.f;
+            
+            float eyeOffset = size / 3.5f;
+            float eyeSize = size / 4.f;
+            
+            eyeLeft.setRadius(eyeSize / 2.f);
+            eyeRight.setRadius(eyeSize / 2.f);
+            eyeLeft.setOrigin(sf::Vector2f(eyeSize / 4.f, eyeSize / 4.f));
+            eyeRight.setOrigin(sf::Vector2f(eyeSize / 4.f, eyeSize / 4.f));
+            
+            float eye1X, eye1Y, eye2X, eye2Y;
+            
+            switch (direction) {
+                case Direction::Up:
+                    eye1X = headX - eyeOffset; eye1Y = headY - eyeOffset;
+                    eye2X = headX + eyeOffset; eye2Y = headY - eyeOffset;
+                    break;
+                case Direction::Down:
+                    eye1X = headX - eyeOffset; eye1Y = headY + eyeOffset;
+                    eye2X = headX + eyeOffset; eye2Y = headY + eyeOffset;
+                    break;
+                case Direction::Left:
+                    eye1X = headX - eyeOffset; eye1Y = headY - eyeOffset;
+                    eye2X = headX - eyeOffset; eye2Y = headY + eyeOffset;
+                    break;
+                case Direction::Right:
+                default:
+                    eye1X = headX + eyeOffset; eye1Y = headY - eyeOffset;
+                    eye2X = headX + eyeOffset; eye2Y = headY + eyeOffset;
+                    break;
+            }
+            
+            eyeLeft.setPosition(sf::Vector2f(eye1X, eye1Y));
+            eyeRight.setPosition(sf::Vector2f(eye2X, eye2Y));
+            eyeLeft.setFillColor(sf::Color(30, 30, 30));
+            eyeRight.setFillColor(sf::Color(30, 30, 30));
+            
+            sf::CircleShape pupilLeft(eyeSize / 5.f);
+            sf::CircleShape pupilRight(eyeSize / 5.f);
+            pupilLeft.setOrigin(sf::Vector2f(eyeSize / 5.f, eyeSize / 5.f));
+            pupilRight.setOrigin(sf::Vector2f(eyeSize / 5.f, eyeSize / 5.f));
+            pupilLeft.setPosition(sf::Vector2f(eye1X, eye1Y));
+            pupilRight.setPosition(sf::Vector2f(eye2X, eye2Y));
+            pupilLeft.setFillColor(sf::Color(10, 10, 10));
+            pupilRight.setFillColor(sf::Color(10, 10, 10));
+            
+            window.draw(segmentShape);
+            window.draw(eyeLeft);
+            window.draw(eyeRight);
+            window.draw(pupilLeft);
+            window.draw(pupilRight);
         } else {
             segmentShape.setFillColor(Constants::Colors::SnakeBody);
+            window.draw(segmentShape);
         }
-        
-        window.draw(segmentShape);
     }
 }
 

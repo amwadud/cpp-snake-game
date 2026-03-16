@@ -38,9 +38,12 @@ private:
     bool grew;
     
     sf::RectangleShape segmentShape;
+    sf::CircleShape eyeLeft;
+    sf::CircleShape eyeRight;
     
     sf::Vector2i getNewHeadPosition();
     bool isOppositeDirection(Direction dir) const;
+    void updateEyePositions();
 };
 
 #endif
