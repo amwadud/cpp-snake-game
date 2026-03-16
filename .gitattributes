@@ -1,0 +1,11 @@
+* text=auto
+
+# Binary files
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+
+# Build outputs
+build/ -diff
+cmake-build-*/ -diff
