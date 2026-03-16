@@ -1,4 +1,5 @@
 #include "Food.h"
+#include "Constants.h"
 
 Food::Food(const Grid& grid, const Snake& snake)
     : grid(grid), rng(std::random_device{}()) {
@@ -6,7 +7,7 @@ Food::Food(const Grid& grid, const Snake& snake)
     float radius = static_cast<float>(grid.getCellSize()) / 2.f - 4.f;
     foodShape.setRadius(radius);
     foodShape.setOrigin(sf::Vector2f(radius, radius));
-    foodShape.setFillColor(sf::Color(255, 80, 80));
+    foodShape.setFillColor(Constants::Colors::Food);
     
     generatePosition(snake);
 }
