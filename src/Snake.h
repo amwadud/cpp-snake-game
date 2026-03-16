@@ -1,10 +1,16 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
+/**
+ * @file Snake.h
+ * @brief Snake entity and movement logic
+ */
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Grid.h"
 
+/** Cardinal direction for snake movement */
 enum class Direction { Up, Down, Left, Right };
 
 class Snake {
