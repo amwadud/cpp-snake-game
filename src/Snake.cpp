@@ -44,6 +44,10 @@ sf::Vector2i Snake::getHead() const {
     return body.front();
 }
 
+int Snake::getLength() const {
+    return static_cast<int>(body.size());
+}
+
 bool Snake::hasCollided() {
     sf::Vector2i head = body.front();
     

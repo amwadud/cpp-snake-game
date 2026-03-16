@@ -17,6 +17,7 @@ public:
     
     const std::vector<sf::Vector2i>& getBody() const;
     sf::Vector2i getHead() const;
+    int getLength() const;
     bool hasCollided();
     bool hasEatenFood(const sf::Vector2i& foodPos) const;
     void grow();
