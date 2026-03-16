@@ -31,6 +31,11 @@ namespace Constants {
         constexpr int PointsPerFood = 10;
     }
 
+    namespace Debug {
+        constexpr bool ShowFPS = true;
+        constexpr bool ShowDebugInfo = false;
+    }
+    
     namespace Colors {
         constexpr sf::Color Background{20, 20, 30};
         constexpr sf::Color GridLine{40, 40, 50};
