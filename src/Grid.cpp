@@ -1,3 +1,8 @@
+/**
+ * @file Grid.cpp
+ * @brief Grid implementation
+ */
+
 #include "Grid.h"
 
 Grid::Grid(int cellSize, int width, int height)
