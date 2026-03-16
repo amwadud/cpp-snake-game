@@ -202,6 +202,10 @@ void Game::update(float deltaTime) {
             if (updateInterval > Constants::Gameplay::MinUpdateInterval) {
                 updateInterval -= Constants::Gameplay::SpeedIncrease;
             }
+            
+            if (score > highScore) {
+                highScore = score;
+            }
         }
     }
     keyProcessed = false;
