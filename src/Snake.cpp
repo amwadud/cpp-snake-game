@@ -1,3 +1,8 @@
+/**
+ * @file Snake.cpp
+ * @brief Snake implementation
+ */
+
 #include "Snake.h"
 #include "Constants.h"
 
