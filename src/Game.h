@@ -25,6 +25,7 @@ private:
     sf::Text scoreText{font, "", 30};
     sf::Text gameOverText{font, "", 30};
     sf::Text pauseText{font, "", 30};
+    sf::Text controlsText{font, "", 16};
     
     GameState state;
     int score;

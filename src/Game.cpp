@@ -46,6 +46,12 @@ Game::Game()
     pauseText.setOrigin(sf::Vector2f(bounds.position.x + bounds.size.x / 2.f, bounds.position.y + bounds.size.y / 2.f));
     pauseText.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f));
     
+    controlsText.setFont(font);
+    controlsText.setCharacterSize(16);
+    controlsText.setFillColor(Constants::Colors::TextWhite);
+    controlsText.setString("Controls: Arrow Keys / WASD to move | P to pause");
+    controlsText.setPosition(sf::Vector2f(10.f, static_cast<float>(Constants::Window::Height - 30)));
+    
     loadHighScore();
     
     snake = new Snake(grid);
@@ -183,6 +189,8 @@ void Game::render() {
     } else if (state == GameState::Paused) {
         window.draw(pauseText);
     }
+    
+    window.draw(controlsText);
     
     window.display();
 }
