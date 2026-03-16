@@ -181,19 +181,19 @@ void Game::update(float deltaTime) {
 void Game::render() {
     window.clear(Constants::Colors::Background);
     
-    sf::RectangleShape gridLine;
-    gridLine.setFillColor(Constants::Colors::GridLine);
+    static sf::RectangleShape gridLineV(sf::Vector2f(1.f, static_cast<float>(Constants::Window::Height)));
+    static sf::RectangleShape gridLineH(sf::Vector2f(static_cast<float>(Constants::Window::Width), 1.f));
+    gridLineV.setFillColor(Constants::Colors::GridLine);
+    gridLineH.setFillColor(Constants::Colors::GridLine);
     
-    for (int x = 0; x <= grid.getWidth(); x += grid.getCellSize()) {
-        gridLine.setSize(sf::Vector2f(1, static_cast<float>(grid.getHeight())));
-        gridLine.setPosition(sf::Vector2f(static_cast<float>(x), 0));
-        window.draw(gridLine);
+    for (int x = 0; x <= Constants::Window::Width; x += Constants::Grid::CellSize) {
+        gridLineV.setPosition(sf::Vector2f(static_cast<float>(x), 0));
+        window.draw(gridLineV);
     }
     
-    for (int y = 0; y <= grid.getHeight(); y += grid.getCellSize()) {
-        gridLine.setSize(sf::Vector2f(static_cast<float>(grid.getWidth()), 1));
-        gridLine.setPosition(sf::Vector2f(0, static_cast<float>(y)));
-        window.draw(gridLine);
+    for (int y = 0; y <= Constants::Window::Height; y += Constants::Grid::CellSize) {
+        gridLineH.setPosition(sf::Vector2f(0, static_cast<float>(y)));
+        window.draw(gridLineH);
     }
     
     if (state != GameState::Start) {
