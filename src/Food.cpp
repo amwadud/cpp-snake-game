@@ -20,6 +20,10 @@ sf::Vector2i Food::getPosition() const {
     return position;
 }
 
+void Food::setScale(float scale) {
+    foodShape.setScale(sf::Vector2f(scale, scale));
+}
+
 void Food::render(sf::RenderWindow& window) {
     float x = static_cast<float>(position.x * grid.getCellSize() + grid.getCellSize() / 2);
     float y = static_cast<float>(position.y * grid.getCellSize() + grid.getCellSize() / 2);

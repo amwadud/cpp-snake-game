@@ -17,6 +17,7 @@ public:
     
     void respawn(const Snake& snake);
     sf::Vector2i getPosition() const;
+    void setScale(float scale);
     
     void render(sf::RenderWindow& window);
 
