@@ -12,6 +12,7 @@ Game::Game()
     : grid(Constants::Grid::CellSize, Constants::Window::Width, Constants::Window::Height),
       snake(nullptr),
       food(nullptr),
+      background(Constants::Window::Width, Constants::Window::Height),
       state(GameState::Start),
       score(0),
       highScore(0),
@@ -249,7 +250,8 @@ void Game::render() {
         screenShake -= 0.02f;
     }
     
-    window.clear(Constants::Colors::Background);
+    window.clear(sf::Color::Transparent);
+    background.render(window);
     
     static sf::RectangleShape gridLineV(sf::Vector2f(1.f, static_cast<float>(Constants::Window::Height)));
     static sf::RectangleShape gridLineH(sf::Vector2f(static_cast<float>(Constants::Window::Width), 1.f));

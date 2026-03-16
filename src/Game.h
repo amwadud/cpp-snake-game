@@ -11,6 +11,7 @@
 #include "Snake.h"
 #include "Food.h"
 #include "ParticleSystem.h"
+#include "GradientBackground.h"
 
 enum class GameState { Start, Playing, GameOver, Paused };
 
@@ -27,6 +28,7 @@ private:
     Snake* snake;
     Food* food;
     ParticleSystem particles;
+    GradientBackground background;
     
     sf::Font font;
     sf::Text scoreText{font, "", 30};
