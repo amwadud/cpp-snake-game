@@ -6,7 +6,7 @@
 #include "Snake.h"
 #include "Food.h"
 
-enum class GameState { Playing, GameOver, Paused };
+enum class GameState { Start, Playing, GameOver, Paused };
 
 class Game {
 public:
@@ -25,6 +25,7 @@ private:
     sf::Text scoreText{font, "", 30};
     sf::Text gameOverText{font, "", 30};
     sf::Text pauseText{font, "", 30};
+    sf::Text startText{font, "", 30};
     sf::Text controlsText{font, "", 16};
     
     GameState state;

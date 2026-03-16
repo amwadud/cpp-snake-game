@@ -7,7 +7,7 @@ Game::Game()
     : grid(Constants::Grid::CellSize, Constants::Window::Width, Constants::Window::Height),
       snake(nullptr),
       food(nullptr),
-      state(GameState::Playing),
+      state(GameState::Start),
       score(0),
       highScore(0),
       updateTimer(0.f),
@@ -52,6 +52,14 @@ Game::Game()
     controlsText.setString("Controls: Arrow Keys / WASD to move | P to pause");
     controlsText.setPosition(sf::Vector2f(10.f, static_cast<float>(Constants::Window::Height - 30)));
     
+    startText.setFont(font);
+    startText.setCharacterSize(48);
+    startText.setFillColor(Constants::Colors::TextWhite);
+    startText.setString("SNAKE\nPress ENTER to start");
+    sf::FloatRect startBounds = startText.getLocalBounds();
+    startText.setOrigin(sf::Vector2f(startBounds.position.x + startBounds.size.x / 2.f, startBounds.position.y + startBounds.size.y / 2.f));
+    startText.setPosition(sf::Vector2f(Constants::Window::Width / 2.f, Constants::Window::Height / 2.f - 50.f));
+    
     loadHighScore();
     
     snake = new Snake(grid);
@@ -93,7 +101,11 @@ void Game::processEvents() {
 }
 
 void Game::handleKeyPress(sf::Keyboard::Scancode key) {
-    if (state == GameState::Playing) {
+    if (state == GameState::Start) {
+        if (key == sf::Keyboard::Scancode::Enter) {
+            state = GameState::Playing;
+        }
+    } else if (state == GameState::Playing) {
         switch (key) {
             case sf::Keyboard::Scancode::Up:
             case sf::Keyboard::Scancode::W:
@@ -176,21 +188,27 @@ void Game::render() {
         window.draw(gridLine);
     }
     
-    food->render(window);
-    snake->render(window);
+    if (state != GameState::Start) {
+        food->render(window);
+        snake->render(window);
+        
+        scoreText.setString("Score: " + std::to_string(score) + 
+                            " | Length: " + std::to_string(snake->getLength()) +
+                            " | High: " + std::to_string(highScore));
+        window.draw(scoreText);
+    }
     
-    scoreText.setString("Score: " + std::to_string(score) + 
-                        " | Length: " + std::to_string(snake->getLength()) +
-                        " | High: " + std::to_string(highScore));
-    window.draw(scoreText);
-    
-    if (state == GameState::GameOver) {
+    if (state == GameState::Start) {
+        window.draw(startText);
+    } else if (state == GameState::GameOver) {
         window.draw(gameOverText);
     } else if (state == GameState::Paused) {
         window.draw(pauseText);
     }
     
-    window.draw(controlsText);
+    if (state != GameState::Start) {
+        window.draw(controlsText);
+    }
     
     window.display();
 }
