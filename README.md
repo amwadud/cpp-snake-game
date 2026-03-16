@@ -2,6 +2,8 @@
 
 A classic Snake game built with SFML (Simple and Fast Multimedia Library).
 
+**Version:** 1.0.0
+
 ## Features
 
 - Smooth snake movement with keyboard controls (Arrow keys or WASD)
