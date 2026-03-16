@@ -52,14 +52,15 @@ namespace Constants {
     }
     
     namespace Colors {
-        constexpr sf::Color Background{20, 20, 30};
-        constexpr sf::Color GridLine{40, 40, 50};
-        constexpr sf::Color SnakeHead{0, 200, 100};
-        constexpr sf::Color SnakeBody{0, 150, 80};
-        constexpr sf::Color Food{255, 80, 80};
-        constexpr sf::Color TextWhite{255, 255, 255};
-        constexpr sf::Color TextRed{255, 80, 80};
-        constexpr sf::Color TextYellow{255, 255, 80};
+        // Gruvbox Material Dark
+        constexpr sf::Color Background{28, 32, 33};      // #1d2021
+        constexpr sf::Color GridLine{40, 40, 40};          // Dark gray
+        constexpr sf::Color SnakeHead{184, 187, 38};       // #b8bb26 (Green)
+        constexpr sf::Color SnakeBody{151, 156, 12};       // #979c0c (Dark Green)
+        constexpr sf::Color Food{254, 128, 25};            // #fe8019 (Orange)
+        constexpr sf::Color TextWhite{235, 219, 178};     // #ebdbb2
+        constexpr sf::Color TextRed{251, 73, 52};         // #fb4934
+        constexpr sf::Color TextYellow{250, 189, 47};     // #fabd2f
     }
 }
 

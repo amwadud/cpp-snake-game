@@ -64,7 +64,7 @@ Game::Game()
     controlsText.setFont(font);
     controlsText.setCharacterSize(16);
     controlsText.setFillColor(Constants::Colors::TextWhite);
-    controlsText.setString("Controls: Arrow Keys / WASD to move | P to pause");
+    controlsText.setString("Controls: Arrow Keys / WASD / Vim (h,j,k,l) | P to pause");
     controlsText.setPosition(sf::Vector2f(10.f, static_cast<float>(Constants::Window::Height - 30)));
     
     startText.setFont(font);
@@ -147,14 +147,17 @@ void Game::handleKeyPress(sf::Keyboard::Scancode key) {
         switch (key) {
             case sf::Keyboard::Scancode::Up:
             case sf::Keyboard::Scancode::W:
+            case sf::Keyboard::Scancode::K:
                 snake->changeDirection(Direction::Up);
                 break;
             case sf::Keyboard::Scancode::Down:
             case sf::Keyboard::Scancode::S:
+            case sf::Keyboard::Scancode::J:
                 snake->changeDirection(Direction::Down);
                 break;
             case sf::Keyboard::Scancode::Left:
             case sf::Keyboard::Scancode::A:
+            case sf::Keyboard::Scancode::H:
                 snake->changeDirection(Direction::Left);
                 break;
             case sf::Keyboard::Scancode::Right:
