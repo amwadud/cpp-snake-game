@@ -32,6 +32,22 @@ void Food::setScale(float scale) {
 void Food::render(sf::RenderWindow& window) {
     float x = static_cast<float>(position.x * grid.getCellSize() + grid.getCellSize() / 2);
     float y = static_cast<float>(position.y * grid.getCellSize() + grid.getCellSize() / 2);
+    
+    float baseRadius = static_cast<float>(grid.getCellSize()) / 2.f - 6.f;
+    float glowRadius = baseRadius * 1.8f;
+    
+    sf::CircleShape glowShape(glowRadius);
+    glowShape.setOrigin(sf::Vector2f(glowRadius, glowRadius));
+    glowShape.setPosition(sf::Vector2f(x, y));
+    glowShape.setFillColor(sf::Color(254, 128, 25, 60));
+    window.draw(glowShape);
+    
+    sf::CircleShape innerGlow(glowRadius * 0.7f);
+    innerGlow.setOrigin(sf::Vector2f(glowRadius * 0.7f, glowRadius * 0.7f));
+    innerGlow.setPosition(sf::Vector2f(x, y));
+    innerGlow.setFillColor(sf::Color(254, 128, 25, 100));
+    window.draw(innerGlow);
+    
     foodShape.setPosition(sf::Vector2f(x, y));
     window.draw(foodShape);
 }
