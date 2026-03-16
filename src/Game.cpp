@@ -162,6 +162,7 @@ void Game::handleKeyPress(sf::Keyboard::Scancode key) {
                 break;
             case sf::Keyboard::Scancode::Right:
             case sf::Keyboard::Scancode::D:
+            case sf::Keyboard::Scancode::L:
                 snake->changeDirection(Direction::Right);
                 break;
             case sf::Keyboard::Scancode::P:
