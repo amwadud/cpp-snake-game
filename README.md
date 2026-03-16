@@ -4,10 +4,15 @@ A classic Snake game built with SFML (Simple and Fast Multimedia Library).
 
 ## Features
 
-- Smooth snake movement with keyboard controls
+- Smooth snake movement with keyboard controls (Arrow keys or WASD)
 - Score tracking with high score persistence
-- Game states: Playing, Paused, Game Over
+- Game states: Start Screen, Playing, Paused, Game Over
 - Progressive difficulty (speed increases as you eat)
+- Real-time high score indicator
+- Visual animations (pulsing food, start screen, indicators)
+- On-screen control hints
+- FPS counter (debug)
+- Snake length display
 
 ## Requirements
 
