@@ -1,6 +1,11 @@
 #ifndef GRID_H
 #define GRID_H
 
+/**
+ * @file Grid.h
+ * @brief Grid system for game board management
+ */
+
 #include <SFML/Graphics.hpp>
 
 class Grid {
