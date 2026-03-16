@@ -203,6 +203,16 @@ void Game::updateScore(int points) {
     if (score > highScore) {
         highScore = score;
     }
+    updateWindowTitle();
+}
+
+void Game::updateWindowTitle() {
+    std::string title = Constants::Window::Title;
+    title += " - Score: " + std::to_string(score);
+    if (score == highScore && score > 0) {
+        title += " (High Score!)";
+    }
+    window.setTitle(title);
 }
 
 void Game::loadHighScore() {

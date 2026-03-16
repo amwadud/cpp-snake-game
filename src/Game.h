@@ -41,6 +41,7 @@ private:
     void updateScore(int points);
     void loadHighScore();
     void saveHighScore();
+    void updateWindowTitle();
 };
 
 #endif
